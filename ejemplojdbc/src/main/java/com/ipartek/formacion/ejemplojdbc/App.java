@@ -18,11 +18,18 @@ public class App {
 		try {
 			UsuarioDAO dao = new UsuarioDAOMySQL();
 
-			for (Usuario u : dao.findAll())
-				System.out.println(u);
+			// for (Usuario u : dao.findAll())
+			// System.out.println(u);
+
+			Usuario usuarioinsert = new Usuario(0, 2, "Nuevo", "nuevopass", "Nuevito");
+
+			dao.insert(usuarioinsert);
+
 		} catch (DAOException e) {
-			// e.printStackTrace();
-			e.getCause().printStackTrace();
+			e.printStackTrace();
+
+			// if (e.getCause() != null)
+			// e.getCause().printStackTrace();
 		}
 
 	}

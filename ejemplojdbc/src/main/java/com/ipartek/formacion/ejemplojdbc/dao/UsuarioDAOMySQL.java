@@ -99,11 +99,46 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 
 	public Usuario findById(int id) {
 
-		return null;
+		Usuario usuario = null;
+
+		try {
+			psFinById.setInt(1, id);
+			ResultSet rs = psFinById.executeQuery(); // Conjunto de resultados que salen
+														// de la consulta
+			if (rs.next()) {
+
+				usuario = new Usuario();
+				usuario.setId(rs.getInt("id"));
+				usuario.setId_roles(rs.getInt("id_roles"));
+				usuario.setNombre_completo(rs.getString("nombre_completo"));
+				usuario.setPassword(rs.getString("password"));
+				usuario.setUsername(rs.getString("username"));
+			}
+		} catch (SQLException e) {
+			throw new DAOException("Error en FindById", e);
+		}
+
+		return usuario;
+
 	}
 
 	public void insert(Usuario usuario) {
 
+		try {
+
+			psInsert.setString(1, usuario.getUsername());
+			psInsert.setString(2, usuario.getPassword());
+			psInsert.setString(3, usuario.getNombre_completo());
+			psInsert.setInt(4, usuario.getId_roles());
+
+			int res = psInsert.executeUpdate();
+
+			if (res != 1)
+				throw new DAOException("La insercion ha devuelto un valor " + res);
+
+		} catch (SQLException e) {
+			throw new DAOException("Error en Insert", e);
+		}
 	}
 
 	public void update(Usuario usuario) {
