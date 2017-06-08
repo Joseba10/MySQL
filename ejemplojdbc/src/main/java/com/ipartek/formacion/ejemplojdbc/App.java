@@ -21,9 +21,19 @@ public class App {
 			// for (Usuario u : dao.findAll())
 			// System.out.println(u);
 
-			Usuario usuarioinsert = new Usuario(0, 2, "Nuevo", "nuevopass", "Nuevito");
+			// Usuario usuarioinsert = new Usuario(0, 2, "Nuevo", "nuevopass", "Nuevito");
 
-			dao.insert(usuarioinsert);
+			// dao.insert(usuarioinsert);
+
+			// Usuario usuarioUpdate = new Usuario(6, 2, "Actualizado", "nuevopass",
+			// "Actualizadousername");
+			// dao.update(usuarioUpdate);
+
+			Usuario usuarioDelete = new Usuario();
+
+			usuarioDelete.setId(4);
+
+			dao.delete(usuarioDelete);
 
 		} catch (DAOException e) {
 			e.printStackTrace();

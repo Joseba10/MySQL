@@ -19,7 +19,7 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 	private final static String FIND_ID = "Select * from usuarios where id=?";
 	private final static String INSERT = "Insert into usuarios(username,password,nombre_completo,id_roles)Values(?,?,?,?)";
 	private final static String Update = "Update usuarios Set username=?,password=?,nombre_completo=?,id_roles=? where id=?";
-	private final static String Delete = "Delete * from usuarios where id=?";
+	private final static String Delete = "Delete from usuarios where id=?";
 	private PreparedStatement psFindAll, psFinById, psInsert, psUpdate, psDelete;
 
 	public UsuarioDAOMySQL() {
@@ -142,14 +142,39 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 	}
 
 	public void update(Usuario usuario) {
+		try {
+			psUpdate.setString(1, usuario.getUsername());
+			psUpdate.setString(2, usuario.getPassword());
+			psUpdate.setString(3, usuario.getNombre_completo());
+			psUpdate.setInt(4, usuario.getId_roles());
+
+			psUpdate.setInt(5, usuario.getId());
+			int res = psUpdate.executeUpdate();
+
+			if (res != 1)
+				throw new DAOException("La actualizacion ha devuelto un valor " + res);
+
+		} catch (SQLException e) {
+			throw new DAOException("Error al actualizar", e);
+		}
 
 	}
 
 	public void delete(Usuario usuario) {
 
+		delete(usuario.getId());
 	}
 
 	public void delete(int id) {
+		try {
+			psDelete.setInt(1, id);
+			int res = psDelete.executeUpdate();
+			if (res != 1)
+				throw new DAOException("La actualizacion ha devuelto un valor " + res);
+		} catch (SQLException e) {
+
+			throw new DAOException("Error en el delete ", e);
+		}
 
 	}
 
