@@ -8,7 +8,7 @@ public interface UsuarioDAO {
 
 	public Usuario findById(int id);
 
-	public void insert(Usuario usuario);
+	public int insert(Usuario usuario);
 
 	public void update(Usuario usuario);
 

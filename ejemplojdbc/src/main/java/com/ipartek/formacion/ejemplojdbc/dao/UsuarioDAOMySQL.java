@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import com.ipartek.formacion.ejemplojdbc.tipos.Usuario;
@@ -30,7 +31,7 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 
 			psFindAll = con.prepareStatement(FIND_ALL);
 			psFinById = con.prepareStatement(FIND_ID);
-			psInsert = con.prepareStatement(INSERT);
+			psInsert = con.prepareStatement(INSERT, Statement.RETURN_GENERATED_KEYS);
 			psUpdate = con.prepareStatement(Update);
 			psDelete = con.prepareStatement(Delete);
 
@@ -122,7 +123,7 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 
 	}
 
-	public void insert(Usuario usuario) {
+	public int insert(Usuario usuario) {
 
 		try {
 
@@ -136,9 +137,18 @@ public class UsuarioDAOMySQL implements UsuarioDAO {
 			if (res != 1)
 				throw new DAOException("La insercion ha devuelto un valor " + res);
 
+			ResultSet generatedKeys = psInsert.getGeneratedKeys();
+
+			if (generatedKeys.next())
+				return generatedKeys.getInt(1);
+
+			else
+				throw new DAOException("No se ha recibido la clave generada");
+
 		} catch (SQLException e) {
 			throw new DAOException("Error en Insert", e);
 		}
+
 	}
 
 	public void update(Usuario usuario) {

@@ -12,29 +12,34 @@ import com.ipartek.formacion.ejemplojdbc.dao.UsuarioDAOMySQL;
 import com.ipartek.formacion.ejemplojdbc.tipos.Usuario;
 
 public class App {
+	static UsuarioDAO dao;
 
 	public static void main(String[] args) {
 
 		try {
-			UsuarioDAO dao = new UsuarioDAOMySQL();
+			dao = new UsuarioDAOMySQL();
+			listado();
 
-			// for (Usuario u : dao.findAll())
-			// System.out.println(u);
+			Usuario usuario = new Usuario(0, 2, "Nuevo", "nuevopass", "k");
 
-			// Usuario usuarioinsert = new Usuario(0, 2, "Nuevo", "nuevopass", "Nuevito");
+			int id = dao.insert(usuario);
 
-			// dao.insert(usuarioinsert);
+			System.out.println("Se ha insertado un nuevo registro con el id" + id);
+			usuario = dao.findById(id);
+			System.out.println("Usuario ID" + id + "=" + usuario);
 
-			// Usuario usuarioUpdate = new Usuario(6, 2, "Actualizado", "nuevopass",
-			// "Actualizadousername");
-			// dao.update(usuarioUpdate);
+			listado();
 
-			Usuario usuarioDelete = new Usuario();
+			usuario.setNombre_completo("modificado");
 
-			usuarioDelete.setId(4);
+			dao.update(usuario);
 
-			dao.delete(usuarioDelete);
+			System.out.println("Se ha modificado el registro" + id);
+			listado();
 
+			dao.delete(usuario);
+			System.out.println("Se ha borrado el registro" + id);
+			listado();
 		} catch (DAOException e) {
 			e.printStackTrace();
 
@@ -42,6 +47,14 @@ public class App {
 			// e.getCause().printStackTrace();
 		}
 
+	}
+
+	public static void listado() {
+
+		System.out.println("Listado");
+		System.out.println("------");
+		for (Usuario u : dao.findAll())
+			System.out.println(u);
 	}
 
 	public static void mainBasico(String[] args) throws InstantiationException, IllegalAccessException, ClassNotFoundException, SQLException {
