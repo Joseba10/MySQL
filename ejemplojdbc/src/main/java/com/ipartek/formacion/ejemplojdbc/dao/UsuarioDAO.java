@@ -2,7 +2,7 @@ package com.ipartek.formacion.ejemplojdbc.dao;
 
 import com.ipartek.formacion.ejemplojdbc.tipos.Usuario;
 
-public interface UsuarioDAO {
+public interface UsuarioDAO extends IpartekDAO {
 
 	public Usuario[] findAll(); // Select
 

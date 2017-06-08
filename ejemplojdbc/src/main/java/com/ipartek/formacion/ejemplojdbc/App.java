@@ -17,9 +17,11 @@ public class App {
 	public static void main(String[] args) {
 
 		try {
-			dao = new UsuarioDAOMySQL();
-			listado();
 
+			dao = new UsuarioDAOMySQL();
+
+			dao.abrir();
+			listado();
 			Usuario usuario = new Usuario(0, 2, "Nuevo", "nuevopass", "k");
 
 			int id = dao.insert(usuario);
@@ -40,11 +42,14 @@ public class App {
 			dao.delete(usuario);
 			System.out.println("Se ha borrado el registro" + id);
 			listado();
+
 		} catch (DAOException e) {
 			e.printStackTrace();
 
 			// if (e.getCause() != null)
 			// e.getCause().printStackTrace();
+		} finally {
+			dao.cerrar();
 		}
 
 	}
