@@ -27,6 +27,10 @@ public class IpartekDAOMySQL implements IpartekDAO {
 		}
 	}
 
+	public IpartekDAOMySQL(String url2, String mysqlUser2, String mysqlPass) {
+
+	}
+
 	public void abrir() {
 
 		try {
@@ -56,6 +60,33 @@ public class IpartekDAOMySQL implements IpartekDAO {
 
 		} catch (Exception e) {
 			throw new DAOException("Error no esperado", e);
+		}
+	}
+
+	public void iniciarTransaccion() {
+
+		try {
+			con.setAutoCommit(false);
+		} catch (SQLException e) {
+			throw new DAOException("Error al  desactivar Autocommit", e);
+		}
+	}
+
+	public void confirmarTransaccion() {
+		try {
+			con.commit();
+			con.setAutoCommit(true);
+		} catch (SQLException e) {
+			throw new DAOException("Error al  confirmar transaccion", e);
+		}
+	}
+
+	public void deshacerTransaccion() {
+		try {
+			con.rollback();
+			con.setAutoCommit(true);
+		} catch (SQLException e) {
+			throw new DAOException("Error al deshacer transaccion", e);
 		}
 	}
 }

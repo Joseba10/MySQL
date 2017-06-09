@@ -16,13 +16,34 @@ public class App {
 
 	public static void main(String[] args) {
 
+		dao = new UsuarioDAOMySQL("jdbc:mysql://localhost/ipartek", "josebaclemente", "joseba");
+
+		dao.abrir();
+		listado();
+
+		dao.iniciarTransaccion();
+
+		Usuario usuario;
+
+		for (int i = 100; i < 200; i++) {
+
+			usuario = new Usuario();
+			usuario.setUsername("usuario" + i);
+			usuario.setPassword("usuario" + "password");
+			usuario.setNombre_completo("Usuario" + i + "Usuariez");
+			usuario.setId_roles(2);
+			dao.insert(usuario);
+		}
+
+		dao.confirmarTransaccion();
+		dao.cerrar();
 		try {
 
-			dao = new UsuarioDAOMySQL();
+			dao = new UsuarioDAOMySQL("jdbc:mysql://localhost/ipartek", "josebaclemente", "joseba");
 
 			dao.abrir();
 			listado();
-			Usuario usuario = new Usuario(0, 2, "Nuevo", "nuevopass", "k");
+			usuario = new Usuario(0, 2, "Nuevo", "nuevopass", "k");
 
 			int id = dao.insert(usuario);
 
